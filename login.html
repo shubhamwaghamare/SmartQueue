@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartQueue Login</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  font-family:Segoe UI, sans-serif;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(
+    180deg,
+    #fff4ec 0%,
+    #f3f0ff 50%,
+    #eef5ff 100%
+  );
+}
+
+/* CARD */
+
+.login-card{
+  background:white;
+  width:420px;
+  padding:50px 45px;
+  border-radius:30px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.12);
+  text-align:center;
+  animation:fadeUp .6s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(30px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* TITLE */
+
+.login-card h2{
+  font-size:34px;
+  margin-bottom:10px;
+}
+
+.login-card p{
+  color:#666;
+  margin-bottom:35px;
+}
+
+/* INPUT */
+
+.input-box{
+  width:100%;
+  padding:16px 18px;
+  margin-bottom:20px;
+  border-radius:14px;
+  border:1px solid #ddd;
+  font-size:16px;
+  outline:none;
+  transition:.3s;
+}
+
+.input-box:focus{
+  border-color:#4facfe;
+  box-shadow:0 0 0 3px rgba(79,172,254,0.15);
+}
+
+/* BUTTON */
+
+.btn{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:16px;
+  background:#4facfe;
+  color:white;
+  font-size:17px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(79,172,254,.4);
+}
+
+/* STEP CONTROL */
+
+.step{
+  display:none;
+}
+
+.step.active{
+  display:block;
+}
+
+.small{
+  font-size:14px;
+  color:#888;
+  margin-top:18px;
+}
+/* ERROR TEXT */
+
+.error{
+  color:#e63946;
+  font-size:14px;
+  text-align:left;
+  margin-top:-12px;
+  margin-bottom:12px;
+  display:none;
+}
+
+/* INVALID INPUT BORDER */
+
+.input-box.error-input{
+  border-color:#e63946;
+  box-shadow:0 0 0 3px rgba(230,57,70,0.15);
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+  <h2>Join SmartQueue</h2>
+  <p>Secure login to enter the queue</p>
+
+  <!-- STEP 1 -->
+<div id="mobileBox" class="step active">
+  <input id="mobile" class="input-box" placeholder="Enter mobile number">
+  <div class="error" id="mobileError"></div>
+  <button class="btn" onclick="sendOTP()">Send OTP</button>
+</div>
+
+
+  <!-- STEP 2 -->
+<div id="otpBox" class="step">
+  <input id="otp" class="input-box" placeholder="Enter OTP">
+  <div class="error" id="otpError"></div>
+  <button class="btn" onclick="verifyOTP()">Verify OTP</button>
+</div>
+
+
+  <!-- STEP 3 -->
+<div id="nameBox" class="step">
+  <input id="name" class="input-box" placeholder="Enter your name">
+  <div class="error" id="nameError"></div>
+  <button class="btn" onclick="joinQueue()">Join Queue</button>
+</div>
+
+
+  <p class="small">OTP based secure authentication</p>
+
+</div>
+
+<!-- SOCKET -->
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+  const socket = io("http://localhost:5000");
+</script>
+
+<!-- YOUR EXISTING JS -->
+
+<script src="js/socket.js"></script>
+<script src="js/otp.js"></script>
+
+<!-- UI STEP SWITCH (VERY IMPORTANT) -->
+
+<script>
+function showBox(id){
+  document.getElementById("mobileBox").classList.remove("active");
+  document.getElementById("otpBox").classList.remove("active");
+  document.getElementById("nameBox").classList.remove("active");
+
+  document.getElementById(id).classList.add("active");
+}
+</script>
+
+</body>
+</html>

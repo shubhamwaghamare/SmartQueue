@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin</title>
+</head>
+<body>
+    <h2>Now Serving: <span id="nowServing"></span></h2>
+
+<button id="completeBtn" onclick="markCompleted()">Completed</button>
+<button id="absentBtn" onclick="markAbsent()">Absent</button>
+
+
+<h3>Waiting</h3>
+<div id="waiting"></div>
+
+<h3>Completed</h3>
+<div id="completed"></div>
+
+<h3>Absent</h3>
+<div id="absent"></div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+  const socket = io("http://localhost:5000");
+</script>
+
+<script src="js/socket.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

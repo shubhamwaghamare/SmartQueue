@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Queue System</title>
+
+<link rel="stylesheet" href="./css/style.css">
+
+</head>
+<body>
+<!-- NAVBAR -->
+<div class="navbar">
+
+  <div class="logo">SmartQueue</div>
+
+  <div>
+    <button class="btn-admin" onclick="goAdmin()">Admin Login</button>
+    <button class="btn-user" onclick="goUser()">Join Queue</button>
+  </div>
+
+</div>
+
+<!-- HERO -->
+<section class="hero">
+
+  <div class="hero-text">
+
+    <h1>
+      The Future of <br>
+      <span>Queue Management</span>
+    </h1>
+
+    <p>
+     Eliminate long waiting lines and improve customer satisfaction with our intelligent queue management system. Real-time updates, OTP verification, and powerful admin controls.
+    </p>
+
+    <button onclick="goUser()">Join Queue</button>
+
+  </div>
+
+  <img class="hero-img"
+   src="./assets/hero.png">
+
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about">
+
+  <h2>About SmartQueue</h2>
+
+  <p>
+    SmartQueue is a digital queue management system designed to eliminate long 
+    waiting lines and improve service efficiency. It allows users to join queues 
+    securely using mobile OTP authentication and receive real-time updates about 
+    their turn.
+  </p>
+
+  <div class="about-grid">
+
+    <div class="about-card">
+      ⏳
+      <h3>Save Time</h3>
+      <p>Users no longer need to stand in long physical queues.</p>
+    </div>
+
+    <div class="about-card">
+      📡
+      <h3>Real-Time Updates</h3>
+      <p>Live queue status updates without page refresh.</p>
+    </div>
+
+    <div class="about-card">
+      🔐
+      <h3>Secure Login</h3>
+      <p>OTP-based authentication ensures verified users.</p>
+    </div>
+
+    <div class="about-card">
+      🧑‍💼
+      <h3>Admin Control</h3>
+      <p>Admins manage waiting, completed and absent users easily.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- how it works -->
+<section class="system-flow">
+
+  <h2 class="flow-title">How it Works</h2>
+  <p class="flow-subtitle">
+    A simple and secure process to manage users in real time
+  </p>
+
+  <div class="flow-container">
+
+    <div class="flow-step">
+      <span class="flow-number">01</span>
+      <div class="flow-content">
+        <h3>User Enters Mobile Number</h3>
+        <p>User starts by entering their mobile number to begin login.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <span class="flow-number">02</span>
+      <div class="flow-content">
+        <h3>OTP Verification</h3>
+        <p>User verifies their identity using secure OTP authentication.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <span class="flow-number">03</span>
+      <div class="flow-content">
+        <h3>User Enters Name</h3>
+        <p>User provides their name after successful OTP verification.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <span class="flow-number">04</span>
+      <div class="flow-content">
+        <h3>User Joins Queue</h3>
+        <p>
+          Customers join the virtual queue using OTP login from anywhere.
+        </p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <span class="flow-number">05</span>
+      <div class="flow-content">
+        <h3>Receive Updates</h3>
+        <p>
+          Users get real-time queue updates and live status on screen.
+        </p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <span class="flow-number">06</span>
+      <div class="flow-content">
+       <h3>Service Ready</h3>
+        <p>
+          Customers are notified when it’s their turn to get served.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="features">
+
+  <h2 class="features-title">Why Choose SmartQueue?</h2>
+  <p class="features-subtitle">
+    A smart digital solution designed to save time and manage queues efficiently.
+  </p>
+
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3>OTP Based Login</h3>
+      <p>Secure mobile authentication for verified users.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Real-Time Queue</h3>
+      <p>Instant live updates without refreshing the page.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🧑‍💼</div>
+      <h3>Admin Management</h3>
+      <p>Admins manage waiting, completed and absent users easily.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">⏱</div>
+      <h3>Save Time</h3>
+      <p>Reduces long physical queues effectively.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- STATS SECTION -->
+<section class="stats">
+
+  <h2 class="stats-title">Why Businesses Choose SmartQueue</h2>
+  <p class="stats-subtitle">
+    SmartQueue helps businesses improve service quality and efficiency
+  </p>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <h1>60%</h1>
+      <h3>Reduce Wait Time</h3>
+      <p>
+        Cut down customer waiting time by up to 60% with efficient queue management.
+      </p>
+    </div>
+
+    <div class="stat-card">
+      <h1>95%</h1>
+      <h3>Increase Satisfaction</h3>
+      <p>
+        Happy customers with transparent wait times and real-time updates.
+      </p>
+    </div>
+
+    <div class="stat-card">
+      <h1>2x</h1>
+      <h3>Boost Efficiency</h3>
+      <p>
+        Optimize staff productivity and serve more customers daily.
+      </p>
+    </div>
+
+    <div class="stat-card">
+      <h1>24/7</h1>
+      <h3>Data Insights</h3>
+      <p>
+        Track peak hours, average wait times, and customer flow patterns.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-modern">
+
+  <h2>Ready to Transform Your Queue Management?</h2>
+
+  <p class="cta-text">
+    Join thousands of businesses that have already improved their customer experience
+  </p>
+
+  <div class="cta-input-box">
+
+    <input 
+      type="email" 
+      placeholder="Enter your work email"
+    >
+
+    <button>
+      Get Started →
+    </button>
+
+  </div>
+
+  <p class="cta-note">
+  Connect with us for a free demo and see how SmartQueue can revolutionize your business.
+  </p>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- BRAND -->
+    <div class="footer-brand">
+      <h2>SmartQueue</h2>
+      <p>Smart queue management for modern businesses</p>
+
+      <div class="social-links">
+        <a href="#">Twitter</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Facebook</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+
+  <div class="footer-bottom">
+    <p>© 2024 SmartQueue. All rights reserved.</p>
+
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+
+</footer>
+
+<script>
+function goUser(){
+  window.location="login.html";
+}
+
+function goAdmin(){
+  window.location="adminLogin.html";
+}
+</script>
+
+</body>
+</html>
