@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — SmartQueue</title>
+   <link rel="icon" type="image/x-icon" href="./css/people.png">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="card">
+    <a href="index.html" class="card-logo">Smart<span>Queue</span></a>
+
+    <h2>Admin Portal</h2>
+    <p>Sign in to manage the queue</p>
+
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder="admin">
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="••••••••" onkeydown="if(event.key==='Enter') loginAdmin()">
+      <div class="err-msg" id="loginErr">Invalid credentials. Please try again.</div>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:16px" onclick="loginAdmin()">
+      Sign In →
+    </button>
+
+    <div style="text-align:center;margin-top:24px">
+      <a href="index.html" style="color:var(--ink-3);font-size:14px;text-decoration:none">← Back to home</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket = io(window.location.origin);
+
+function loginAdmin() {
+  const username = document.getElementById('adminUser').value.trim();
+  const password = document.getElementById('adminPass').value;
+  socket.emit('adminLogin', { username, password });
+}
+
+socket.on('adminAuth', ({ ok, token }) => {
+  if (ok) {
+    // Store token in sessionStorage for admin panel to use
+    sessionStorage.setItem('adminToken', token);
+    window.location = 'admin.html';
+  } else {
+    document.getElementById('loginErr').classList.add('show');
+    document.getElementById('adminUser').classList.add('err');
+    document.getElementById('adminPass').classList.add('err');
+  }
+});
+</script>
+
+</body>
+</html>

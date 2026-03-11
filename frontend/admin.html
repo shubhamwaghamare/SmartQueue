@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — SmartQueue</title>
+  <link rel="icon" type="image/x-icon" href="./css/people.png">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="admin-sidebar">
+    <a href="#" class="nav-logo">Smart<span>Queue</span></a>
+
+    <nav class="sidebar-nav">
+      <div class="sb-item active" id="sbQueue" onclick="showPage('queue')">
+        <span class="sb-icon">📋</span> Queue Manager
+      </div>
+      <div class="sb-item" id="sbQR" onclick="showPage('qr')">
+        <span class="sb-icon">📷</span> QR Code
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-label">Logged in as</div>
+        <div class="sidebar-user-name">admin</div>
+      </div>
+
+      <button id="terminateBtn" class="btn-terminate" onclick="terminateSession()">
+        🔴 Terminate Session
+      </button>
+
+      <a href="adminlogin.html" onclick="sessionStorage.removeItem('adminToken')"
+        class="btn btn-ghost btn-signout">
+        Sign out
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="admin-main">
+
+    <!-- ── MOBILE TOP BAR ── -->
+    <div class="mobile-topbar">
+      <a href="#" class="nav-logo" style="font-family:'Playfair Display',serif;font-size:20px;color:var(--accent);text-decoration:none">Smart<span style="color:var(--accent-2);font-style:italic">Queue</span></a>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰ Menu</button>
+    </div>
+
+    <!-- ── MOBILE MENU DROPDOWN ── -->
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="sb-item" onclick="showPage('queue');toggleMobileMenu()">📋 Queue Manager</div>
+      <div class="sb-item" onclick="showPage('qr');toggleMobileMenu()">📷 QR Code</div>
+      <div class="sb-item" onclick="terminateSession()">🔴 Terminate Session</div>
+      <a href="adminlogin.html" onclick="sessionStorage.removeItem('adminToken')" class="sb-item" style="color:rgba(255,255,255,0.5);text-decoration:none">Sign out</a>
+    </div>
+
+    <!-- ── PAGE: QUEUE MANAGER ── -->
+    <div id="pageQueue">
+      <div class="admin-header">
+        <div>
+          <h1>Queue Manager</h1>
+          <p>Manage waiting, completed, and absent users in real time</p>
+        </div>
+        <div class="admin-header-right">
+          <span id="sessionBadge" class="session-badge active">● Session Active</span>
+        </div>
+      </div>
+
+      <!-- Session terminated notice -->
+      <div id="terminatedNotice" class="terminated-notice">
+        <span class="terminated-notice-icon">🔴</span>
+        <div>
+          <div class="terminated-notice-title">Session Terminated</div>
+          <div class="terminated-notice-text">The QR code is now disabled. Users cannot join the queue. Start a new session by logging in again.</div>
+        </div>
+      </div>
+
+      <!-- Now Serving -->
+      <div class="serving-big">
+        <div class="serving-left">
+          <div class="serving-avatar" id="servingAvatar">—</div>
+          <div>
+            <div class="serving-label">Now Serving</div>
+            <div id="nowServingName">No users yet</div>
+          </div>
+        </div>
+        <div class="serving-actions">
+          <button class="btn-complete" id="completeBtn" onclick="markCompleted()" disabled>✓ Mark Complete</button>
+          <button class="btn-absent"   id="absentBtn"   onclick="markAbsent()"    disabled>✗ Mark Absent</button>
+        </div>
+      </div>
+
+      <!-- Queue panels -->
+      <div class="queue-panels">
+        <div class="queue-panel qp-waiting">
+          <div class="qp-header">
+            <div class="qp-title">Waiting</div>
+            <div class="qp-count" id="waitingCount">0</div>
+          </div>
+          <div class="qp-list" id="waitingList"><div class="qp-empty">Queue is empty</div></div>
+        </div>
+        <div class="queue-panel qp-done">
+          <div class="qp-header">
+            <div class="qp-title">Completed</div>
+            <div class="qp-count" id="completedCount">0</div>
+          </div>
+          <div class="qp-list" id="completedList"><div class="qp-empty">None yet</div></div>
+        </div>
+        <div class="queue-panel qp-absent">
+          <div class="qp-header">
+            <div class="qp-title">Absent</div>
+            <div class="qp-count" id="absentCount">0</div>
+          </div>
+          <div class="qp-list" id="absentList"><div class="qp-empty">None yet</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: QR CODE ── -->
+    <div id="pageQR" style="display:none">
+      <div class="admin-header">
+        <div>
+          <h1>QR Code</h1>
+          <p>Share this code so users can scan and join the queue</p>
+        </div>
+      </div>
+
+      <div class="qr-card">
+        <h3 class="qr-card-title">Session QR Code</h3>
+        <p class="qr-card-subtitle">
+          Only users who scan <strong>this QR</strong> can join the current queue session
+        </p>
+
+        <div id="qrWrapper">
+          <div id="qrcode" class="qr-code-box"></div>
+        </div>
+
+        <div id="qrDisabled" class="qr-disabled-box">
+          <span class="qr-disabled-icon">🔴</span>
+          <span class="qr-disabled-label">QR Disabled</span>
+          <span class="qr-disabled-text">Session has been terminated</span>
+        </div>
+
+        <div id="tokenBlock" class="token-block">
+          <div class="token-label">Session Token</div>
+          <code id="tokenDisplay" class="token-value"></code>
+        </div>
+
+        <p class="qr-note">⚠️ This QR expires only when admin terminates the session</p>
+
+        <button onclick="showPage('queue')" class="btn btn-ghost" style="margin-top:24px">
+          ← Back to Queue Manager
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket     = io(window.location.origin);
+let adminToken   = sessionStorage.getItem('adminToken');
+let qrGenerated  = false;
+let sessionAlive = false;
+
+if (!adminToken) window.location = 'adminlogin.html';
+
+/* ── Session status ── */
+socket.on('sessionStatus', ({ active, token }) => {
+  sessionAlive = active;
+
+  if (active && token && token !== adminToken) {
+    adminToken = token;
+    sessionStorage.setItem('adminToken', token);
+    qrGenerated = false;
+    document.getElementById('qrcode').innerHTML = '';
+  }
+
+  const badge      = document.getElementById('sessionBadge');
+  const notice     = document.getElementById('terminatedNotice');
+  const termBtn    = document.getElementById('terminateBtn');
+  const qrWrapper  = document.getElementById('qrWrapper');
+  const qrDisabled = document.getElementById('qrDisabled');
+  const tokenBlock = document.getElementById('tokenBlock');
+
+  if (active) {
+    badge.className  = 'session-badge active';
+    badge.innerText  = '● Session Active';
+    notice.classList.remove('show');
+    termBtn.style.display = 'flex';
+    qrWrapper.style.display  = 'block';
+    qrDisabled.classList.remove('show');
+    tokenBlock.style.display = 'block';
+  } else {
+    badge.className  = 'session-badge terminated';
+    badge.innerText  = '🔴 Session Terminated';
+    notice.classList.add('show');
+    termBtn.style.display = 'none';
+    qrWrapper.style.display  = 'none';
+    qrDisabled.classList.add('show');
+    tokenBlock.style.display = 'none';
+  }
+});
+
+/* ── Terminate session ── */
+function terminateSession() {
+  if (!confirm('Are you sure you want to terminate this session?\nThe QR code will be disabled and all users will be notified.')) return;
+  socket.emit('terminateSession');
+}
+
+/* ── Page switching ── */
+function showPage(page) {
+  document.getElementById('pageQueue').style.display = 'none';
+  document.getElementById('pageQR').style.display    = 'none';
+  document.getElementById('sbQueue').classList.remove('active');
+  document.getElementById('sbQR').classList.remove('active');
+
+  if (page === 'queue') {
+    document.getElementById('pageQueue').style.display = 'block';
+    document.getElementById('sbQueue').classList.add('active');
+  } else {
+    document.getElementById('pageQR').style.display = 'block';
+    document.getElementById('sbQR').classList.add('active');
+
+    if (!qrGenerated && adminToken && sessionAlive) {
+      const qrURL = `${window.location.origin}/login.html?token=${adminToken}`;
+      new QRCode(document.getElementById('qrcode'), {
+        text: qrURL,
+        width: 220, height: 220,
+        colorDark: '#1a1a2e', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      document.getElementById('tokenDisplay').innerText = adminToken;
+      qrGenerated = true;
+    }
+  }
+}
+
+/* ── Queue helpers ── */
+function getName(u) { return typeof u === 'object' ? u.name : u; }
+
+socket.on('queueUpdate', (data) => {
+  const serving   = data.nowServing;
+  const isServing = serving && serving !== 'None';
+
+  const nameEl   = document.getElementById('nowServingName');
+  const avatarEl = document.getElementById('servingAvatar');
+
+  if (isServing) {
+    const n = getName(serving);
+    nameEl.innerText   = n;
+    avatarEl.innerText = n[0].toUpperCase();
+  } else {
+    nameEl.innerText   = 'No users yet';
+    avatarEl.innerText = '—';
+  }
+
+  document.getElementById('completeBtn').disabled = !isServing;
+  document.getElementById('absentBtn').disabled   = !isServing;
+
+  fillList('waitingList',   'waitingCount',   data.waiting,   'waiting');
+  fillList('completedList', 'completedCount', data.completed, 'completed');
+  fillList('absentList',    'absentCount',    data.absent,    'absent');
+});
+
+function fillList(listId, countId, users, type) {
+  const list  = document.getElementById(listId);
+  const count = document.getElementById(countId);
+  count.innerText = users.length;
+
+  if (!users.length) {
+    list.innerHTML = '<div class="qp-empty">None yet</div>';
+    return;
+  }
+
+  list.innerHTML = users.map((u) => {
+    const name = getName(u);
+    return `
+      <div class="qp-item qp-item-row">
+        <div class="qi-avatar ${type}">${name[0].toUpperCase()}</div>
+        <span>${name}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function markCompleted() { socket.emit('markCompleted'); }
+function markAbsent()    { socket.emit('markAbsent');    }
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

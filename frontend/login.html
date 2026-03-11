@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Queue — SmartQueue</title>
+   <link rel="icon" type="image/x-icon" href="./css/people.png">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="card">
+    <a href="index.html" class="card-logo">Smart<span>Queue</span></a>
+
+    <!-- SCREEN: NO ACTIVE SESSION -->
+    <div id="screenNoSession" style="display:none;text-align:center">
+      <div style="font-size:52px;margin-bottom:16px">🔒</div>
+      <h2 style="margin-bottom:10px">No Active Queue</h2>
+      <p style="color:var(--ink-3);margin-bottom:28px">
+        No queue session is currently active.<br>
+        Please scan the QR code provided by the admin to join.
+      </p>
+      <a href="index.html" class="btn btn-ghost btn-pill">← Back to Home</a>
+    </div>
+
+    <!-- SCREEN: INVALID TOKEN -->
+    <div id="screenInvalid" style="display:none;text-align:center">
+      <div style="font-size:52px;margin-bottom:16px">⚠️</div>
+      <h2 style="margin-bottom:10px">Invalid QR Code</h2>
+      <p style="color:var(--ink-3);margin-bottom:28px">
+        This QR code is expired or invalid.<br>
+        Please scan the latest QR code from the admin.
+      </p>
+      <a href="index.html" class="btn btn-ghost btn-pill">← Back to Home</a>
+    </div>
+
+    <!-- SCREEN: SESSION TERMINATED -->
+    <div id="screenTerminated" style="display:none;text-align:center">
+      <div style="font-size:52px;margin-bottom:16px">🔴</div>
+      <h2 style="margin-bottom:10px">Session Ended</h2>
+      <p style="color:var(--ink-3);margin-bottom:28px">
+        The admin has ended this queue session.<br>
+        Please contact the admin for further assistance.
+      </p>
+      <a href="index.html" class="btn btn-ghost btn-pill">← Back to Home</a>
+    </div>
+
+    <!-- SCREEN: MAIN FLOW -->
+    <div id="screenMain" style="display:none">
+
+      <div class="steps-indicator">
+        <div class="si-dot active" id="dot1"></div>
+        <div class="si-dot" id="dot2"></div>
+      </div>
+
+      <!-- STEP 1: QR SCAN -->
+      <div class="step-box active" id="stepQR">
+        <h2>Scan the<br>Queue QR Code</h2>
+        <p>Point your camera at the QR code displayed by the admin</p>
+
+        <div id="qrReader" style="
+          width:100%;border-radius:var(--radius-lg);overflow:hidden;
+          margin-bottom:16px;background:var(--cream);
+          border:2px dashed rgba(124,111,205,0.25);min-height:220px;
+        "></div>
+
+        <div id="qrStatus" style="text-align:center;font-size:14px;color:var(--ink-3);margin-bottom:20px">
+          Starting camera…
+        </div>
+        <div style="text-align:center;margin-top:24px">
+          <a href="index.html" style="color:var(--ink-3);font-size:14px;text-decoration:none">← Back to home</a>
+         </div>
+
+       
+      </div>
+
+      <!-- STEP 2: USER DETAILS -->
+      <div class="step-box" id="stepDetails">
+        <div id="scanPill" style="
+          display:none;background:var(--mint);color:var(--accent-3);
+          font-size:13px;font-weight:600;padding:6px 14px;
+          border-radius:99px;margin-bottom:18px;
+        ">✓ QR Scanned Successfully</div>
+
+        <h2>Your details</h2>
+        <p>Fill in your info to join the queue</p>
+
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="userName" placeholder="e.g. Arjun Mehta">
+          <div class="err-msg" id="nameErr">Please enter your full name</div>
+        </div>
+
+        <div class="input-group">
+          <label>Phone Number</label>
+          <input type="tel" id="userPhone" placeholder="10-digit mobile number" maxlength="10">
+          <div class="err-msg" id="phoneErr">Enter a valid 10-digit number</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="input-group">
+            <label>Age</label>
+            <input type="number" id="userAge" placeholder="25" min="1" max="120">
+            <div class="err-msg" id="ageErr">Enter a valid age</div>
+          </div>
+          <div class="input-group">
+            <label>Place / City</label>
+            <input type="text" id="userPlace" placeholder="e.g. Pune">
+            <div class="err-msg" id="placeErr">Enter your city</div>
+          </div>
+        </div>
+
+        <button
+          class="btn btn-primary"
+          style="width:100%;justify-content:center;padding:15px;font-size:16px;margin-top:8px"
+          onclick="joinQueue()"
+        >Join Queue →</button>
+
+        <div style="text-align:center;margin-top:16px">
+          <button onclick="goBackToScan()" style="
+            background:none;border:none;color:var(--ink-3);font-size:13px;
+            cursor:pointer;font-family:'DM Sans',sans-serif;
+          ">← Scan again</button>
+        </div>
+      </div>
+
+    </div><!-- end screenMain -->
+
+  </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket = io(window.location.origin);
+const urlParams = new URLSearchParams(window.location.search);
+const urlToken  = urlParams.get('token'); // null if opened via Join Queue button
+
+let html5QrCode = null;
+let activeToken = urlToken;
+let flowStarted = false; // true once we've shown the main flow
+let sessionWasLive = false;
+
+/* ════════════════════════════════════════
+   SCREEN CONTROL
+════════════════════════════════════════ */
+function showScreen(name) {
+  ['screenNoSession','screenInvalid','screenTerminated','screenMain']
+    .forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById(name).style.display = 'block';
+}
+
+/* ════════════════════════════════════════
+   STEP CONTROL
+════════════════════════════════════════ */
+function setStep(n) {
+  document.getElementById('stepQR').classList.toggle('active', n === 1);
+  document.getElementById('stepDetails').classList.toggle('active', n === 2);
+  document.getElementById('dot1').classList.toggle('active', n >= 1);
+  document.getElementById('dot2').classList.toggle('active', n >= 2);
+}
+
+/* ════════════════════════════════════════
+   ON PAGE LOAD — show scanner immediately,
+   no waiting for socket at all
+════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  showScreen('screenMain');
+  setStep(1);
+  flowStarted = true;
+
+  if (urlToken) {
+    // Came via QR link — validate token once socket connects
+    // Scanner shown while waiting, will switch to details if valid
+    setStatus('Connecting to server…');
+  } else {
+    // Came via Join Queue button — open camera right away
+    startScanner();
+  }
+});
+
+/* ════════════════════════════════════════
+   SOCKET CONNECT — handle token validation
+   and watch for session termination
+════════════════════════════════════════ */
+socket.on('connect', () => {
+  // If page was opened with a token in URL, validate it now
+  if (urlToken) {
+    socket.emit('validateToken', urlToken);
+  }
+});
+
+socket.on('tokenValid', (valid) => {
+  // Only handle URL token validation here (scanner uses its own once() call)
+  if (!urlToken) return;
+  if (valid) {
+    setStep(2); // token good — skip scanner, go to details
+  } else {
+    showScreen('screenInvalid');
+  }
+});
+
+/* ════════════════════════════════════════
+   SESSION TERMINATED mid-flow
+════════════════════════════════════════ */
+socket.on('sessionStatus', ({ active }) => {
+  if (active) {
+    sessionWasLive = true;
+  } else if (sessionWasLive && flowStarted) {
+    showScreen('screenTerminated');
+    stopScanner();
+  }
+});
+
+/* ════════════════════════════════════════
+   TOKEN VALIDATION helper for scanner
+════════════════════════════════════════ */
+function validateScannedToken(token, callback) {
+  socket.emit('validateToken', token);
+  socket.once('tokenValid', callback);
+}
+
+/* ════════════════════════════════════════
+   QR SCANNER
+════════════════════════════════════════ */
+function startScanner() {
+  stopScanner();
+  html5QrCode = new Html5Qrcode("qrReader");
+
+  html5QrCode.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: { width: 200, height: 200 } },
+    (decodedText) => {
+      // QR detected — stop scanner immediately
+      stopScanner();
+
+      try {
+        const scannedParams = new URLSearchParams(new URL(decodedText).search);
+        const scannedToken  = scannedParams.get('token');
+
+        if (!scannedToken) {
+          setStatus('✗ QR has no token. Please scan the correct QR.');
+          setTimeout(startScanner, 2000);
+          return;
+        }
+
+        setStatus('Validating QR…');
+
+        validateScannedToken(scannedToken, (valid) => {
+          if (valid) {
+            activeToken = scannedToken;
+            setStatus('✓ QR code verified!');
+            document.getElementById('scanPill').style.display = 'inline-block';
+            setTimeout(() => setStep(2), 500);
+          } else {
+            setStatus('✗ Wrong or expired QR. Please scan the correct one.');
+            setTimeout(startScanner, 2000);
+          }
+        });
+
+      } catch (e) {
+        setStatus('✗ Could not read QR. Please try again.');
+        setTimeout(startScanner, 2000);
+      }
+    },
+    () => {} // per-frame errors — ignore
+  )
+  .then(() => setStatus('Camera active — point at the QR code'))
+  .catch(() => setStatus('Camera unavailable — use manual entry below'));
+}
+
+function stopScanner() {
+  if (html5QrCode) {
+    html5QrCode.stop().catch(() => {});
+    html5QrCode = null;
+  }
+}
+
+function setStatus(msg) {
+  const el = document.getElementById('qrStatus');
+  if (el) el.innerText = msg;
+}
+
+function skipToDetails() {
+  stopScanner();
+  document.getElementById('scanPill').style.display = 'none';
+  setStep(2);
+}
+
+function goBackToScan() {
+  setStep(1);
+  setTimeout(startScanner, 300);
+}
+
+/* ════════════════════════════════════════
+   FORM VALIDATION
+════════════════════════════════════════ */
+function clearErrors() {
+  document.querySelectorAll('.err-msg').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('input').forEach(i => i.classList.remove('err'));
+}
+
+function showErr(errId, inputId) {
+  document.getElementById(errId).classList.add('show');
+  document.getElementById(inputId).classList.add('err');
+}
+
+/* ════════════════════════════════════════
+   JOIN QUEUE
+════════════════════════════════════════ */
+function joinQueue() {
+  clearErrors();
+
+  const name  = document.getElementById('userName').value.trim();
+  const phone = document.getElementById('userPhone').value.trim();
+  const age   = parseInt(document.getElementById('userAge').value);
+  const place = document.getElementById('userPlace').value.trim();
+
+  let ok = true;
+  if (!name)                        { showErr('nameErr',  'userName');  ok = false; }
+  if (!/^[0-9]{10}$/.test(phone))   { showErr('phoneErr', 'userPhone'); ok = false; }
+  if (!age || age < 1 || age > 120) { showErr('ageErr',   'userAge');   ok = false; }
+  if (!place)                       { showErr('placeErr', 'userPlace'); ok = false; }
+  if (!ok) return;
+
+  const userData = { name, phone, age, place };
+  sessionStorage.setItem('qfUser', JSON.stringify(userData));
+  socket.emit('addUser', { userData, token: activeToken });
+}
+
+socket.on('joinSuccess', () => {
+  window.location = 'userstatus.html';
+});
+
+socket.on('joinRejected', () => {
+  showScreen('screenTerminated');
+});
+</script>
+
+</body>
+</html>

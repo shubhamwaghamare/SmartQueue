@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartQueue - Your Queue Status</title>
+   <link rel="icon" type="image/x-icon" href="./css/people.png">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="status-layout">
+
+  <!-- Header -->
+  <div class="status-nav">
+    <a href="index.html" class="nav-logo">Smart<span>Queue</span></a>
+    <span style="font-size:13px;background:var(--lavender);color:var(--accent);padding:5px 14px;border-radius:99px;font-weight:600">● Live</span>
+  </div>
+
+  <div class="status-content">
+
+    <!-- Your position badge -->
+    <div id="yourPositionBadge" style="background:var(--accent);color:white;border-radius:var(--radius-xl);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(124,111,205,0.35);display:none">
+      <div>
+        <div style="font-size:12px;opacity:.75;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Your position</div>
+        <div style="font-family:'Playfair Display',serif;font-size:36px;line-height:1" id="yourPosition">—</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:12px;opacity:.75;margin-bottom:4px">Est. wait</div>
+        <div style="font-size:24px;font-weight:600" id="yourEstWait">— min</div>
+      </div>
+    </div>
+
+    <!-- Now Serving -->
+    <div class="now-serving-card">
+      <div class="nsc-eyebrow">Now Serving</div>
+      <div id="statusNowServing">—</div>
+
+      <div class="nsc-stats">
+        <div class="nsc-stat">
+          <strong id="startTime">--:--</strong>
+          Start time
+        </div>
+        <div class="nsc-stat">
+          <strong id="totalTime">0m 0s</strong>
+          Time elapsed
+        </div>
+        <div class="nsc-stat">
+          <strong id="queueLength">0</strong>
+          People waiting
+        </div>
+      </div>
+    </div>
+
+    <!-- Waiting list -->
+    <div class="waiting-card">
+      <div class="wc-header">
+        <div class="wc-title">Waiting List</div>
+        <span id="waitCount" style="font-size:13px;background:var(--lavender);color:var(--accent);padding:4px 12px;border-radius:99px;font-weight:600">0</span>
+      </div>
+      <div id="queueList">
+        <div style="text-align:center;padding:32px;color:var(--ink-3);font-style:italic">No users in queue</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket = io(window.location.origin);
+
+const me = JSON.parse(sessionStorage.getItem('qfUser') || '{}');
+let startTimestamp = null;
+let timerInterval  = null;
+let lastServing    = null;
+
+function formatTime(d) {
+  return d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+}
+
+// FIX: Accept a start date so timer reflects when serving actually began,
+// not when this page was opened. Server sends servingStartTime as ISO string.
+function startTimer(fromDate) {
+  startTimestamp = fromDate || new Date();
+  document.getElementById('startTime').innerText = formatTime(startTimestamp);
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((new Date() - startTimestamp) / 1000);
+    const m = Math.floor(elapsed / 60), s = elapsed % 60;
+    document.getElementById('totalTime').innerText = `${m}m ${s}s`;
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  document.getElementById('startTime').innerText = '--:--';
+  document.getElementById('totalTime').innerText = '0m 0s';
+}
+
+/* ── Session terminated while user is on status page ── */
+socket.on('sessionStatus', ({ active }) => {
+  if (!active) {
+    stopTimer();
+    document.getElementById('statusNowServing').innerText = 'Session Ended';
+    document.getElementById('startTime').innerText = '--:--';
+    document.getElementById('totalTime').innerText = '--';
+    document.getElementById('queueLength').innerText = '0';
+    document.getElementById('waitCount').innerText = '0';
+    document.getElementById('yourPositionBadge').style.display = 'none';
+    document.getElementById('queueList').innerHTML =
+      '<div style="text-align:center;padding:32px;color:var(--ink-3)">🔴 The admin has ended this session.</div>';
+  }
+});
+
+socket.on('queueUpdate', (data) => {
+
+  const isNone = !data.nowServing || data.nowServing === 'None';
+  const servingName = isNone ? '—' : (typeof data.nowServing === 'object' ? data.nowServing.name : data.nowServing);
+
+  document.getElementById('statusNowServing').innerText = servingName;
+  document.getElementById('queueLength').innerText = data.waiting.length;
+  document.getElementById('waitCount').innerText = data.waiting.length;
+
+  if (!isNone && servingName !== lastServing) {
+    // Use server-provided start time so timer is correct even if page was
+    // opened after serving already began
+    const serverStart = data.servingStartTime ? new Date(data.servingStartTime) : new Date();
+    startTimer(serverStart);
+  }
+  if (isNone) stopTimer();
+  lastServing = servingName;
+
+  // Queue list
+  const list = document.getElementById('queueList');
+  list.innerHTML = '';
+
+  if (data.waiting.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--ink-3);font-style:italic">No users waiting</div>';
+    document.getElementById('yourPositionBadge').style.display = 'none';
+    return;
+  }
+
+  let myPos = -1;
+
+  data.waiting.forEach((user, i) => {
+    const name  = typeof user === 'object' ? user.name : user;
+    const isYou = me.name && name === me.name;
+    if (isYou) myPos = i + 1;
+
+    const est = (i + 1) * 10;
+
+    const item = document.createElement('div');
+    item.className = 'queue-item' + (isYou ? ' is-you' : '');
+    item.innerHTML = `
+      <div class="qi-rank">${i + 1}</div>
+      <div class="qi-name">${name}${isYou ? ' <span class="qi-you">YOU</span>' : ''}</div>
+      <div class="qi-wait">~${est} min</div>
+    `;
+    list.appendChild(item);
+  });
+
+  // Your position badge
+  const badge = document.getElementById('yourPositionBadge');
+  if (myPos > 0) {
+    badge.style.display = 'flex';
+    document.getElementById('yourPosition').innerText = `#${myPos}`;
+    document.getElementById('yourEstWait').innerText = `~${myPos * 10} min`;
+  } else {
+    badge.style.display = 'none';
+  }
+});
+</script>
+
+</body>
+</html>

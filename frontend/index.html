@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartQueue</title>
+  <link rel="icon" type="image/x-icon" href="./css/people.png">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ─── NAVBAR ─────────────────────────────────── -->
+<nav class="nav" id="mainNav">
+  <a href="index.html" class="nav-logo">Smart<span>Queue</span></a>
+
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <a href="adminlogin.html" class="btn btn-ghost">Admin Login</a>
+    <a href="login.html" class="btn btn-primary">Join Queue</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="hero-eyebrow"><span>✦</span> Smart Queue Management</div>
+
+    <h1>
+      No more waiting
+      <em>in the dark.</em>
+    </h1>
+
+    <p class="hero-desc">
+      SmartQueue gives users real-time updates on their queue position, estimated wait times, and instant notifications — all secured. Say goodbye to long lines and hello to a smarter waiting experience.
+    </p>
+
+    <div class="hero-actions">
+      <a href="login.html" class="btn btn-primary btn-lg">Join Queue</a>
+      <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
+    </div>
+
+    <div class="hero-note">verified, real-time, no app download needed</div>
+  </div>
+
+  <div class="hero-visual">
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="hc-header">
+          <div class="hc-title">Queue Dashboard</div>
+          <div class="hc-badge">● Live</div>
+        </div>
+        <div class="hc-serving">
+          <div class="hc-serving-label">Now Serving</div>
+          <div class="hc-serving-name">Karan Sharma</div>
+        </div>
+        <div class="hc-queue">
+          <div class="hc-row">
+            <div class="hc-num">2</div>
+            <div class="hc-name">Priya Mehta </div>
+            <div class="hc-time">~10 min</div>
+          </div>
+          <div class="hc-row" style="background:var(--lavender)">
+            <div class="hc-num" style="background:var(--accent-2)">3</div>
+            <div class="hc-name">You</div>
+            <div class="hc-time">~20 min</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-num" style="background:var(--ink-3)">4</div>
+            <div class="hc-name">Rohan Verma </div>
+            <div class="hc-time">~30 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="hc-float-1">✓ Arjun marked complete</div>
+      <div class="hc-float-2">🔔 Your turn is near!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS STRIP ──────────────────────────────── -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num">60<span>%</span></div>
+    <div class="stat-label">Reduction in wait time</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">95<span>%</span></div>
+    <div class="stat-label">Customer satisfaction</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2<span>x</span></div>
+    <div class="stat-label">Staff efficiency boost</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">24<span>/7</span></div>
+    <div class="stat-label">Real-time data insights</div>
+  </div>
+</div>
+
+<!-- ─── HOW IT WORKS ─────────────────────────────── -->
+<section class="how" id="how">
+  <div style="text-align:center; margin-bottom:10px">
+    <span class="section-tag">Process</span>
+  </div>
+  <div style="text-align:center">
+    <h2 class="section-title" style="text-align:center">How SmartQueue works</h2>
+    <p class="section-sub" style="margin:0 auto">Six simple steps from scan to service — no app, no login required.</p>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="step-number">01</div>
+      <div class="step-icon" style="background:var(--lavender)">📷</div>
+      <h3>Scan the QR Code</h3>
+      <p>Click "Join Queue" on the home page. Point your camera at the QR code displayed by the admin to get started instantly.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-number">02</div>
+      <div class="step-icon" style="background:var(--peach)">📋</div>
+      <h3>Fill Your Details</h3>
+      <p>Enter your name, phone number, age, and city. Quick one-time form — no account or password needed.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-number">03</div>
+      <div class="step-icon" style="background:var(--mint)">✅</div>
+      <h3>Join the Queue</h3>
+      <p>Hit "Join Queue" and you're instantly added. You'll see your position number and estimated wait time right away.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-number">04</div>
+      <div class="step-icon" style="background:var(--sky)">📡</div>
+      <h3>Track Live Status</h3>
+      <p>Watch the queue move in real-time. See who's being served, how many people are ahead, and your updated wait time.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-number">05</div>
+      <div class="step-icon" style="background:var(--rose)">🧑‍💼</div>
+      <h3>Admin Manages Queue</h3>
+      <p>Admin marks each user as Complete or Absent from the panel. The next person moves up automatically in real-time.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-number">06</div>
+      <div class="step-icon" style="background:var(--lavender)">🎉</div>
+      <h3>Get Served</h3>
+      <p>When it's your turn, your name appears at the top as "Now Serving". Walk in and get served — no confusion, no chaos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─────────────────────────────────── -->
+<section class="features-section" id="features">
+  <div>
+    <span class="section-tag">Features</span>
+    <h2 class="section-title">Everything you need<br>to run queues smoothly</h2>
+    <p class="section-sub">From secure login to real-time admin controls — SmartQueue covers it all.</p>
+
+    <div class="features-list">
+      <div class="feat-item">
+        <div class="feat-icon" style="background:var(--lavender)">📱</div>
+        <div class="feat-text">
+          <h4>QR Code Entry</h4>
+          <p>Admin-generated QR code gives users instant access to the queue — no URL sharing.</p>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon" style="background:var(--mint)">⚡</div>
+        <div class="feat-text">
+          <h4>Real-Time Updates</h4>
+          <p>Queue moves instantly — no refresh needed. All users see changes as they happen.</p>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon" style="background:var(--sky)">🧑‍💼</div>
+        <div class="feat-text">
+          <h4>Powerful Admin Panel</h4>
+          <p>Mark users as complete or absent, view waiting/done/absent lists — all in one place.</p>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon" style="background:var(--rose)">📊</div>
+        <div class="feat-text">
+          <h4>Queue Position &amp; Wait Time</h4>
+          <p>Users always know their rank, how many people are ahead, and estimated wait time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-mockup">
+    <div class="mockup-panel">
+      <div class="mp-head">
+        <div class="mp-dot" style="background:#f5c2c7;width:10px;height:10px"></div>
+        <div class="mp-dot" style="background:#ffeeba;width:10px;height:10px"></div>
+        <div class="mp-dot" style="background:#c3e6cb;width:10px;height:10px"></div>
+        <div class="mp-status">3 Waiting</div>
+      </div>
+      <div style="font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Now Serving</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--accent);margin-bottom:20px">Shubham Roy</div>
+      <div class="mp-user-row">
+        <div class="mp-avatar" style="background:var(--accent)">2</div>
+        <div class="mp-user-info">
+          <div class="mp-user-name">Neha</div>
+          <div class="mp-user-sub">Waiting · ~10 min</div>
+        </div>
+      </div>
+      <div class="mp-user-row" style="background:var(--lavender);border-radius:10px;padding:10px 0 10px 8px">
+        <div class="mp-avatar" style="background:var(--accent-2)">3</div>
+        <div class="mp-user-info">
+          <div class="mp-user-name">You (Shyam)</div>
+          <div class="mp-user-sub">Waiting · ~20 min</div>
+        </div>
+        <span style="font-size:10px;background:var(--rose);color:#c45a6a;padding:3px 8px;border-radius:99px;font-weight:700;margin-right:8px">YOU</span>
+      </div>
+      <div class="mp-user-row">
+        <div class="mp-avatar" style="background:var(--ink-3)">4</div>
+        <div class="mp-user-info">
+          <div class="mp-user-name">Rajesh</div>
+          <div class="mp-user-sub">Waiting · ~30 min</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button style="flex:1;background:var(--mint);color:var(--accent-3);border:none;padding:12px;border-radius:var(--radius-md);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer">✓ Complete</button>
+      <button style="flex:1;background:var(--rose);color:#c45a6a;border:none;padding:12px;border-radius:var(--radius-md);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer">✗ Absent</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─────────────────────────────────────── -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div>
+      <span class="section-tag">About</span>
+      <h2 class="section-title">Built for modern<br>service environments</h2>
+      <p class="section-sub" style="margin-bottom:32px">
+        SmartQueue is a digital queue management system designed to eliminate long waiting lines and improve service efficiency for clinics, banks, government offices, and any service centre.
+      </p>
+      <a href="login.html" class="btn btn-primary btn-pill">Join a queue now →</a>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="ac-icon">⏳</div>
+        <div class="ac-title">Save Time</div>
+        <div class="ac-desc">Users no longer need to stand in long physical queues. Wait from anywhere.</div>
+      </div>
+      <div class="about-card">
+        <div class="ac-icon">📡</div>
+        <div class="ac-title">Real-Time</div>
+        <div class="ac-desc">Live queue status updates pushed instantly via WebSockets — no refresh.</div>
+      </div>
+      <div class="about-card">
+        <div class="ac-icon">🔐</div>
+        <div class="ac-title">Secure Registration</div>
+        <div class="ac-desc">Verified user registration ensures only legitimate users can join the queue.</div>
+      </div>
+      <div class="about-card">
+        <div class="ac-icon">🧑‍💼</div>
+        <div class="ac-title">Admin Control</div>
+        <div class="ac-desc">Complete admin panel to manage waiting, served, and absent users with ease.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ───────────────────────────────────── -->
+<section class="contact" id="contact">
+  <span class="section-tag">Contact</span>
+  <h2 class="section-title">Get in touch</h2>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Let's talk about<br>your queue problem</h3>
+      <p>Interested in deploying SmartQueue for your business? Reach out for a free consultation and demo.</p>
+      <div class="contact-detail">
+        <div class="cd-icon">📧</div>
+        <div class="cd-text">
+          <strong>Email</strong>
+          hello@SmartQueue.app
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="cd-icon">📞</div>
+        <div class="cd-text">
+          <strong>Phone</strong>
+          +91 98765 43210
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="cd-icon">📍</div>
+        <div class="cd-text">
+          <strong>Location</strong>
+          Nagpur, Maharashtra, India
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Arjun">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Mehta">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="arjun@example.com">
+      </div>
+      <div class="form-group">
+        <label>Organisation</label>
+        <input type="text" placeholder="City Clinic / HDFC Bank / etc.">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us about your use case..."></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:15px">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ───────────────────────────────────────── -->
+<section class="cta">
+  <span class="section-tag">Get Started</span>
+  <h2 class="section-title">Ready to transform<br>your queue?</h2>
+  <p>Join forward-thinking businesses that have already improved their customer experience with SmartQueue.</p>
+  <div class="cta-box">
+    <input type="email" placeholder="Enter your work email">
+    <button class="btn btn-primary btn-pill">Request Demo →</button>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─────────────────────────────────────── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#">Smart<span>Queue</span></a>
+      <p>SmartQueue, real-time queue management for modern service environments. Reduce wait times, increase satisfaction.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="footer-col">
+      <h4>Access</h4>
+      <a href="login.html">User Login</a>
+      <a href="adminlogin.html">Admin Panel</a>
+      <a href="userstatus.html">Queue Status</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#contact">Contact Us</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 SmartQueue. All rights reserved.</p>
+    <div class="social-row">
+      <a href="#" class="social-btn">𝕏</a>
+      <a href="#" class="social-btn">in</a>
+      <a href="#" class="social-btn">f</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Animate on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.how-step, .about-card, .feat-item, .stat-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(28px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
